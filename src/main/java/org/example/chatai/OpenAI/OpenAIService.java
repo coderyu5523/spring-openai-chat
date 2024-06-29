@@ -1,4 +1,5 @@
 package org.example.chatai.OpenAI;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -44,3 +45,4 @@ public class OpenAIService {
         return "Error: No response from OpenAI";
     }
 }
+

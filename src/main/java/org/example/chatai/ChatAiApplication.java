@@ -2,13 +2,11 @@ package org.example.chatai;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 
-@SpringBootApplication(exclude = {DataSourceAutoConfiguration.class })
+@SpringBootApplication
 public class ChatAiApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(ChatAiApplication.class, args);
     }
-
 }
