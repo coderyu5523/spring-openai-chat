@@ -5,6 +5,32 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.1.4/sockjs.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        .message {
+            padding: 5px;
+            margin: 5px;
+            border-radius: 5px;
+            max-width: 80%;
+        }
+        .user-message {
+            background-color: #DCF8C6;
+            text-align: right;
+            float: right;
+            clear: both;
+        }
+        .ai-message {
+            background-color: #EDEDED;
+            text-align: left;
+            float: left;
+            clear: both;
+        }
+        #chatArea {
+            height: 300px;
+            overflow-y: scroll;
+            border: 1px solid black;
+            padding: 10px;
+        }
+    </style>
     <script type="text/javascript">
         var stompClient = null;
 
@@ -13,7 +39,7 @@
             stompClient = Stomp.over(socket);
             stompClient.connect({}, function(frame) {
                 console.log('Connected: ' + frame);
-                stompClient.subscribe('/user/topic/messages', function(response) {
+                stompClient.subscribe('/topic/messages', function(response) {
                     showMessage(JSON.parse(response.body));
                 });
             });
@@ -28,11 +54,21 @@
             };
             stompClient.send('/app/chat.sendMessage', {}, JSON.stringify(chatMessage));
             $('#message').val('');
+            showUserMessage(chatMessage); // 사용자의 메시지를 바로 표시
         }
 
         function showMessage(message) {
-            var messageStr = message.sender + ': ' + message.content + '\n';
-            $('#chatArea').append(messageStr);
+            var messageElement = $('<div class="message ai-message"></div>');
+            messageElement.text(message.sender + ': ' + message.content);
+            $('#chatArea').append(messageElement);
+            $('#chatArea').scrollTop($('#chatArea')[0].scrollHeight); // 스크롤을 아래로
+        }
+
+        function showUserMessage(message) {
+            var messageElement = $('<div class="message user-message"></div>');
+            messageElement.text(message.sender + ': ' + message.content);
+            $('#chatArea').append(messageElement);
+            $('#chatArea').scrollTop($('#chatArea')[0].scrollHeight); // 스크롤을 아래로
         }
 
         $(function () {
@@ -55,7 +91,7 @@
     <button id="connectBtn">Connect</button>
 </div>
 <br/>
-<div id="chatArea" style="height: 300px; overflow-y: scroll;"></div>
+<div id="chatArea"></div>
 <br/>
 <div>
     <textarea id="message" rows="3" cols="40"></textarea>

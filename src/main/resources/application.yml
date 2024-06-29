@@ -1,3 +1,7 @@
+spring:
+  datasource:
+    initialize: false
+
 openai:
   api:
-    key: YOUR_OPENAI_API_KEY
+    key:
