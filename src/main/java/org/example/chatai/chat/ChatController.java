@@ -14,8 +14,8 @@ public class ChatController {
 
 
     @MessageMapping("/chat.sendMessage")
-    public void sendMessage(@Payload ChatRequest.ChatMessageDTO chatMessage) {
-        chatService.processMessage(chatMessage);
+    public void sendMessage(@Payload ChatRequest.ChatMessageDTO requestDTO) {
+        chatService.processMessage(requestDTO);
     }
 
     @MessageMapping("/chat.addUser")

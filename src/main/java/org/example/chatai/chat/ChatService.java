@@ -13,13 +13,11 @@ public class ChatService {
     private final OpenAIService openAIService;
 
 
-    public void processMessage(ChatRequest.ChatMessageDTO message) {
-        String userMessage = message.getContent();
+    public void processMessage(ChatRequest.ChatMessageDTO requestDTO) {
+        String userMessage = requestDTO.getContent();
         String aiResponse = openAIService.askOpenAI(userMessage);
 
-        ChatRequest.ChatMessageDTO aiMessage = new ChatRequest.ChatMessageDTO();
-        aiMessage.setContent(aiResponse);
-        aiMessage.setSender("AI");
+        ChatResponse.ChatMessageDTO aiMessage = new ChatResponse.ChatMessageDTO(aiResponse);
 
         messagingTemplate.convertAndSend("/topic/messages", aiMessage);  // 일반 구독 경로로 변경
     }
